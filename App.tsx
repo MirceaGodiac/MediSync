@@ -8,6 +8,7 @@ export default function App() {
       <Text>Open up App.tsx to start working on your app!</Text>
       <Text>Test push 2</Text>
       <Text>Test 3</Text>
+      <Text>Test 4</Text>
       <StatusBar style="auto" />
     </View>
   );
