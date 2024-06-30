@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import auth from "@react-native-firebase/auth"
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import db from "@react-native-firebase/database";
 // Register screen component, just the input fields and 3 buttons (as of the ui)
 // Rendered conditionally in AuthPage
 const RegisterScreen = () => {
-
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confrimPassword, setConfirmPassword] = useState("");
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
-  const createProfile = async (response: any) => {
+  const createProfile = async (response: FirebaseAuthTypes.UserCredential) => {
     // to do later, will add stuff to firestore realtime database
     // now i just made a user autentithication system
     // to see how to do this visit https://www.youtube.com/watch?v=mZlKwRV4MC8
+    db().ref(`/users/${response.user.uid}`).set({ name });
   }
 
   const registerAndGoToMainFlow = async (response: any) => {
-    if(email && password && password == confrimPassword)
+    if(email && password)
     {
       try{
         const response = await auth().createUserWithEmailAndPassword(
@@ -30,6 +32,7 @@ const RegisterScreen = () => {
 
         if(response.user)
         {
+          console.log(response.user.uid)
           await createProfile(response);
           nav.replace("Home")
         }
@@ -45,6 +48,15 @@ const RegisterScreen = () => {
   return (
     <View>
       <Text style={styles.title}>Register</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={name}
+        onChangeText={setName}
+      />
+      
       <TextInput
         style={styles.input}
         placeholder="Email"

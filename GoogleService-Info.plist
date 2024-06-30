@@ -26,5 +26,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:723071844192:ios:b0fe149e5e748ed1df2805</string>
+	<key>DATABASE_URL</key>
+	<string>https://medisync-4ec40-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
