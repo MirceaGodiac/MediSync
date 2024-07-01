@@ -7,10 +7,12 @@ import db from "@react-native-firebase/database";
 // Register screen component, just the input fields and 3 buttons (as of the ui)
 // Rendered conditionally in AuthPage
 const RegisterScreen = () => {
-  const [name, setName] = useState("");
+  const [CNP, setCNP] = useState("6150716016696");
+  const [nrTelefon, setNrTelefon] = useState("+40754213564")
+  const [name, setName] = useState("Marius");
+  const [surName, setSurName] = useState("Popescu");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confrimPassword, setConfirmPassword] = useState("");
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -18,7 +20,7 @@ const RegisterScreen = () => {
     // to do later, will add stuff to firestore realtime database
     // now i just made a user autentithication system
     // to see how to do this visit https://www.youtube.com/watch?v=mZlKwRV4MC8
-    db().ref(`/users/${response.user.uid}`).set({ name });
+    db().ref(`/users/${response.user.uid}`).set({ CNP, nrTelefon, name, surName, email });
   }
 
   const registerAndGoToMainFlow = async (response: any) => {
@@ -56,6 +58,42 @@ const RegisterScreen = () => {
         value={name}
         onChangeText={setName}
       />
+
+      <TextInput
+        style={styles.input}
+        placeholder="CNP"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={CNP}
+        onChangeText={setCNP}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Numar Telefon"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={nrTelefon}
+        onChangeText={setNrTelefon}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={name}
+        onChangeText={setName}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        autoCapitalize="none"
+        autoCorrect={false}
+        value={surName}
+        onChangeText={setSurName}
+      />
       
       <TextInput
         style={styles.input}
@@ -74,15 +112,7 @@ const RegisterScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        secureTextEntry
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={confrimPassword}
-        onChangeText={setConfirmPassword}
-      />
+      
       <TouchableOpacity style={styles.button} onPress={registerAndGoToMainFlow}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
