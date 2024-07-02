@@ -6,7 +6,10 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import db from "@react-native-firebase/database";
 // Register screen component, just the input fields and 3 buttons (as of the ui)
 // Rendered conditionally in AuthPage
-const RegisterScreen = () => {
+
+
+function RegisterScreen () {
+  
   const [CNP, setCNP] = useState("6150716016696");
   const [nrTelefon, setNrTelefon] = useState("+40754213564")
   const [name, setName] = useState("Marius");
