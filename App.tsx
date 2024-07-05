@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './assets/Auth Group/AuthPage'; // Adjust the path as needed
 import HomeScreen from './assets/Homescreen/home'; // Create a HomeScreen component
+import Formular from './assets/DiagnosticForm/FormularAnalize';
 
 
 
@@ -15,9 +16,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-          
+        <Stack.Screen name="Login" component={LoginScreen} />
+        
+        <Stack.Screen name="FormularAnalize" component={Formular}/>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
