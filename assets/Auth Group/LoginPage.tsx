@@ -53,12 +53,7 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.button} onPress={goToMainFlow}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.googleButton]}>
-        <Text style={styles.buttonText}>Login with Google</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.appleButton]}>
-        <Text style={styles.buttonText}>Login with Apple ID</Text>
-      </TouchableOpacity>
+      
     </View>
   );
 };

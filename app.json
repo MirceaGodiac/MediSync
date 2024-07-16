@@ -21,7 +21,8 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.medsupport.medisync"
+      "package": "com.medsupport.medisync",
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -2,36 +2,56 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import LoginScreen from './LoginPage';
 import RegisterScreen from './RegisterPage';
+import { getAuth } from "firebase/auth";
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 
 const AuthGroup = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  return(
-    (isLoggedIn) ? 
-    <View style={styles.container}>
+  const nav = useNavigation<NativeStackNavigationProp<any>>();
+  //const auth = getAuth();
+  //const user = auth.currentUser;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //if(user)
+  {
+    //setIsLoggedIn(true);
+  }
+  return (
+    (isLoggedIn) ?
+      <View style={styles.container}>
         <LoginScreen>
-        </LoginScreen>   
-        <View style={{alignItems: 'center'}}>
+        </LoginScreen>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity onPress={() => {
             setIsLoggedIn(false)
           }}>
             <Text style={styles.linkText}>Don't have an account?</Text>
           </TouchableOpacity>
-          
+          <TouchableOpacity onPress={() => {
+            nav.push("ForgotPassword")
+          }}>
+            <Text style={styles.linkText}>Forgot password?</Text>
+          </TouchableOpacity>
+
         </View>
-    </View>
-    :
-    <View style={styles.container}>
+      </View>
+      :
+      <View style={styles.container}>
         <RegisterScreen>
-        </RegisterScreen>   
-        <View style={{alignItems: 'center'}}>
-        <TouchableOpacity onPress={() => {
+        </RegisterScreen>
+        <View style={{ alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => {
             setIsLoggedIn(true)
           }}>
             <Text style={styles.linkText}>Already have an account?</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            nav.push("ForgotPassword")
+          }}>
+            <Text style={styles.linkText}>Forgot password?</Text>
+          </TouchableOpacity>
         </View>
-    </View>
+      </View>
   )
 }
 

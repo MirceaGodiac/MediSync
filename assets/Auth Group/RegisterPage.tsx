@@ -127,12 +127,7 @@ function RegisterScreen() {
         <TouchableOpacity style={styles.button} onPress={registerAndGoToMainFlow}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.googleButton]}>
-          <Text style={styles.buttonText}>Register with Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.appleButton]}>
-          <Text style={styles.buttonText}>Register with Apple ID</Text>
-        </TouchableOpacity>
+        
       </ScrollView>
 
     </View>
