@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions, Alert, Image } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import auth from "@react-native-firebase/auth";
@@ -31,29 +31,53 @@ const LoginScreen = () => {
   }
 
   return (
-    <View style={{ marginBottom: 30 }}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={email}
-        onChangeText={setEmail}
+    <View style={styles.container}>
+      <Image
+        style={styles.imageStyle}
+        source={require('../Obiecte.png')}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={goToMainFlow}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      
+      <Text style={styles.subtitle}> {"    < "}Inapoi la pagina principala</Text>
+      <Text style={styles.title}>Bine ati revenit!</Text>
+      <View style={{ flex: 2, justifyContent: "center" }}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={password}
+          onChangeText={setPassword}
+        />
+        <View>
+          <TouchableOpacity style={styles.button} onPress={goToMainFlow}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+
+          <Text style={[styles.subtitle, { textAlign: 'center' }]}>sau</Text>
+
+          <TouchableOpacity style={styles.googlebutton} onPress={() => { Alert.alert("Opa", "Nam facuto inca") }}>
+            <View style={styles.content}>
+              <Image
+                source={{ uri: 'https://img.icons8.com/color/48/000000/google-logo.png' }}
+                style={styles.icon}
+              />
+              <Text style={styles.googletext}>Sign in with Google</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+
+
+
     </View>
   );
 };
@@ -61,14 +85,20 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
+    justifyContent: 'space-between',
   },
   title: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
+    textAlign: 'left',
+    marginLeft: 20,
+  },
+  subtitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    marginTop: 10,
+    color: "gray"
   },
   linkText: {
     color: '#007BFF',
@@ -81,15 +111,17 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 20,
+    margin: 10,
     paddingHorizontal: 10,
   },
   button: {
     backgroundColor: '#007BFF',
     paddingVertical: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: 'center',
-    marginBottom: 10,
+    marginTop: 30,
+    width: "40%",
+    alignSelf: "center"
   },
   googleButton: {
     backgroundColor: '#DB4437',
@@ -100,6 +132,33 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
+  },
+  imageStyle: {
+    maxWidth: "100%",
+    flex: 1,
+  },
+
+  googlebutton: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 10,
+    width: "60%",
+    alignSelf: "center"
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+  },
+  googletext: {
+    color: 'gray',
+    fontWeight: 'bold',
   },
 });
 

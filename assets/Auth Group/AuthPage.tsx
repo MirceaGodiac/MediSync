@@ -6,37 +6,46 @@ import { getAuth } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
+import { ScrollView } from 'react-native-gesture-handler';
+
+
 
 const AuthGroup = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [authPersistence, setAuthPersistence] = useState(false);
+
+
   const nav = useNavigation<NativeStackNavigationProp<any>>();
-  //const auth = getAuth();
-  //const user = auth.currentUser;
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //if(user)
-  {
-    //setIsLoggedIn(true);
-  }
+
   return (
     (isLoggedIn) ?
-      <View style={styles.container}>
-        <LoginScreen>
-        </LoginScreen>
-        <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => {
-            setIsLoggedIn(false)
-          }}>
-            <Text style={styles.linkText}>Don't have an account?</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            nav.push("ForgotPassword")
-          }}>
-            <Text style={styles.linkText}>Forgot password?</Text>
-          </TouchableOpacity>
+      <View style={{ flex: 1, backgroundColor: "#f3e3ff" }}>
+        <ScrollView>
+          <View>
+            <LoginScreen />
+            <View style={{ alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => {
+                setIsLoggedIn(false)
+              }}>
+                <Text style={styles.linkText}>Don't have an account?</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                nav.push("ForgotPassword")
+              }}>
+                <Text style={styles.linkText}>Forgot password?</Text>
+              </TouchableOpacity>
 
-        </View>
+            </View>
+            <View style={{ height: 10 }} />
+          </View>
+        </ScrollView>
       </View>
+
       :
-      <View style={styles.container}>
+      <View style={{ flex: 1, backgroundColor: "#f3e3ff" }}>
+        <ScrollView>
         <RegisterScreen>
         </RegisterScreen>
         <View style={{ alignItems: 'center' }}>
@@ -51,6 +60,9 @@ const AuthGroup = () => {
             <Text style={styles.linkText}>Forgot password?</Text>
           </TouchableOpacity>
         </View>
+        <View style={{ height: 10 }} />
+        </ScrollView>
+
       </View>
   )
 }
@@ -99,6 +111,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
   },
+
 });
 
 export default AuthGroup;
