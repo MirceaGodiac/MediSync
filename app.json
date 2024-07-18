@@ -25,7 +25,8 @@
       "package": "com.medsupport.medisync",
       "permissions": [
         "android.permission.CAMERA"
-      ]
+      ],
+      "jsEngine": "hermes"
     },
     "web": {
       "favicon": "./assets/favicon.png"

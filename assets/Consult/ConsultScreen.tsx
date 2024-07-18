@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import {printToFileAsync} from "expo-print";
+import {shareAsync} from "expo-sharing";
 
 const ConsultScreen = () => {
     const [inputs, setInputs] = useState([{ id: Math.random().toString(), value: '' }]);
@@ -21,6 +23,20 @@ const ConsultScreen = () => {
     const deleteInputHandler = (id: string) => {
         setInputs(inputs.filter(input => input.id !== id));
     };
+
+    const html = `
+        <html>
+            <body>
+                <h1>Ahhh</h1>
+            </body>
+        </html>
+    `;
+
+    let generatePDF = async () => {
+        const file = await printToFileAsync(
+
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -47,6 +63,7 @@ const ConsultScreen = () => {
             </View>
             
             <Button title="Add Input" onPress={addInputHandler} />
+            <Button title="Submit" onPress={addInputHandler} />
         </View>
     );
 };
