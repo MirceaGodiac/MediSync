@@ -34,8 +34,13 @@ const ConsultScreen = () => {
 
     let generatePDF = async () => {
         const file = await printToFileAsync(
+            {
+                html: html,
+                base64: false,
+            }
+        );
 
-        )
+        await shareAsync(file.uri)
     }
 
     return (
@@ -63,7 +68,7 @@ const ConsultScreen = () => {
             </View>
             
             <Button title="Add Input" onPress={addInputHandler} />
-            <Button title="Submit" onPress={addInputHandler} />
+            <Button title="Submit" onPress={generatePDF} />
         </View>
     );
 };
