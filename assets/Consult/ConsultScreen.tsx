@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
 
-const App = () => {
+const ConsultScreen = () => {
     const [inputs, setInputs] = useState([{ id: Math.random().toString(), value: '' }]);
 
     const addInputHandler = () => {
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default App;
+export default ConsultScreen;
