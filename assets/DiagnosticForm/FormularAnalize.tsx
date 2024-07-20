@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { View, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
-import NewText from './TextObj';
-import NewParagraf from './ParagrafObj';
-import NewBooleanInput from './BooleanObj';
+import NewText from './inputObjects/TextObj';
+import NewParagraf from './inputObjects/ParagrafObj';
+import NewBooleanInput from './inputObjects/BooleanObj';
 import GeneratePDF from './PDFgenerator';
 
-const Formular = (email) => {
-    const [inputs, setInputs] = useState([]);
+const Formular = (email:string) => {
+    const [inputs, setInputs] = useState<object[]>([]);
     const [counter,changeCounter] = useState(0)
-    ///text structure: {code,val:string}
-    ///paragraf structure: {code,master_title,values:[]}
-    ///boolean structure: {code,valuebool:boolean,valuetext:string}
+    
+    ///text structure: {id:code,value:string}
+    ///paragraf structure: {id:code,masterText,value:[]}
+    ///boolean structure: {id:code,valuebool:boolean,valuetext:string}
 
     const addInputHandler = () => {
         changeCounter(counter+1)
@@ -20,7 +21,7 @@ const Formular = (email) => {
     const addParagrafHandler = () =>{
         changeCounter(counter+1)
         const code = "2"+counter
-        setInputs([...inputs, { id: code, masterText:'aaaa' , value: [] }]);
+        setInputs([...inputs, { id: code, masterText:'' , value: [] }]);
     }
     const addBooleanHandler = () =>{
         changeCounter(counter+1)
@@ -28,32 +29,32 @@ const Formular = (email) => {
         setInputs([...inputs, { id: code, valuetext:'' , valuebool:0 }]);
     }
 
-    const handleParagrafMasterTextChange = (text,id) =>{
-        const newinputs = inputs.map((input)=>{
+    const handleParagrafMasterTextChange = (text:string,id:number) =>{
+        const newinputs = inputs.map((input:any)=>{
             if(input.id==id)
                 return {...input,masterText:text}
             return input
         })
         setInputs(newinputs)
     }
-    const handleBooleanTextChange = (text,id) =>{
-        const newinputs = inputs.map((input)=>{
+    const handleBooleanTextChange = (text:string,id:number) =>{
+        const newinputs = inputs.map((input:any)=>{
             if(input.id==id)
                 return {...input,valuetext:text}
             return input
         })
         setInputs(newinputs)
     }
-    const handleBooleanChange = (val,id) =>{
-        const newinputs = inputs.map((input)=>{
+    const handleBooleanChange = (val:number,id:number) =>{
+        const newinputs = inputs.map((input:any)=>{
             if(input.id==id)
                 return {...input,valuebool:val}
             return input
         })
         setInputs(newinputs)
     }
-    const handleInputChange = (text, id) => {
-        const newInputs = inputs.map(input => {
+    const handleInputChange = (text:string,id:number) => {
+        const newInputs = inputs.map((input:any) => {
             if (input.id === id) {
                 return { ...input, value: text };
             }
@@ -61,9 +62,8 @@ const Formular = (email) => {
         });
         setInputs(newInputs);
     };
-    const handleParagrafAnyUpdate = (texts,id) =>{
-        console.log(texts,id)
-        const NewObjs = inputs.map(input=>{
+    const handleParagrafAnyUpdate = (texts:object,id:number) =>{
+        const NewObjs = inputs.map((input:any)=>{
             if(input.id===id)
                 return {...input,value:texts}
             return input
@@ -72,8 +72,8 @@ const Formular = (email) => {
         setInputs(NewObjs)
     }
 
-    const deleteInputHandler = (id) => {
-        setInputs(inputs.filter(input => input.id !== id));
+    const deleteInputHandler = (id:number) => {
+        setInputs(inputs.filter((input:any) => input.id !== id));
     };
 
     return (
@@ -85,7 +85,7 @@ const Formular = (email) => {
                 <Button title="Add Boolean" onPress={addBooleanHandler} />
                 </View>
                 <ScrollView>
-                {inputs.map((input, index) => (
+                {inputs.map((input:any, index) => (
                     <View key={input.id} style={styles.inputContainer}>
                         <TouchableOpacity
                             style={styles.deleteButton}
@@ -100,7 +100,8 @@ const Formular = (email) => {
                 ))}
                 
             </ScrollView>
-                <Button title="trimite" onPress={()=>{GeneratePDF(inputs)}}/>
+                <Button title="trimite" onPress={()=>{
+                    GeneratePDF(inputs)}}/>
             </View>
             
             

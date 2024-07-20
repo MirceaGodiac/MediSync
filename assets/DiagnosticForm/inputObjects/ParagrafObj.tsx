@@ -3,7 +3,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { View, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
 import NewText from './TextObj';
 
-const NewParagraf = ({prop}) =>{
+const NewParagraf = ({prop}:any) =>{
     const {inputs,id,handleParagrafAnyUpdate,masterText,handleParagrafMasterTextChange} = prop
     const [counter,changeCounter] = useState(0)
 
@@ -14,8 +14,8 @@ const NewParagraf = ({prop}) =>{
         handleParagrafAnyUpdate(newInputs,prop.id)
     };
 
-    const ParafhandleInputChange = (text, id) => {
-        const newInputs = inputs.map(input => {
+    const ParafhandleInputChange = (text:string, id:number) => {
+        const newInputs = inputs.map((input:any) => {
             if (input.id === id) {
                 return { ...input, value: text };
             }
@@ -24,8 +24,8 @@ const NewParagraf = ({prop}) =>{
         handleParagrafAnyUpdate(newInputs,prop.id)
     };
 
-    const deleteInputHandler = (id) => {
-        const newInputs = inputs.filter(input => input.id !== id);
+    const deleteInputHandler = (id:number) => {
+        const newInputs = inputs.filter((input:any) => input.id !== id);
         handleParagrafAnyUpdate(newInputs,prop.id)
     };
 
@@ -33,9 +33,9 @@ const NewParagraf = ({prop}) =>{
         <View >
             <TextInput value = {masterText} onChangeText = {text=>{handleParagrafMasterTextChange(text,prop.id)}} style={styles.masterinput}/>
             <View style={styles.container}>
-                <Button style = {styles.addbutton} title="Add Input" onPress={ParafaddInputHandler} />
+                <Button title="Add Input" onPress={ParafaddInputHandler} />
                 <ScrollView>
-                {inputs.map((input, index) => (
+                {inputs.map((input:any, index:number) => (
                     <View key={input.id} style={styles.inputContainer}>
                         <TouchableOpacity
                             style={styles.deleteButton}
