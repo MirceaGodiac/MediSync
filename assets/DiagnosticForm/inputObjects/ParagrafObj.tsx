@@ -58,7 +58,8 @@ const NewParagraf = ({prop}:any) =>{
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-around',
-        borderWidth:3,
+        borderWidth:2,
+        padding:5,
         paddingLeft:20,
         borderColor:'grey',
         width:'100%'
@@ -78,6 +79,8 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,
+        width:30,
+        alignSelf: 'flex-end',
     },
     deleteButtonText: {
         color: 'white',
@@ -87,12 +90,14 @@ const styles = StyleSheet.create({
         width:'20%',
         flex:1,
         alignSelf:'flex-end',
+
     },
     masterinput: {
         width:'100%',
         height: 30,
         borderColor: 'gray',
         borderWidth: 1,
+        marginBottom:10,
     },
 });
 

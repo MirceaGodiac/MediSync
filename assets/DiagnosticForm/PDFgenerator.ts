@@ -7,10 +7,11 @@ import GenerateBooleanString from './Html_string_to_pdf/GenerateBooleanString';
     ///paragraf structure: {id:code,masterText,value:[]}
     ///boolean structure: {id:code,valuebool:boolean,valuetext:string}
 
-const GeneratePDF = async ( data:any ) => {
-    let html:string = '<html><h1 style="font:50;text-align:center;">Document medical</h1><div>';
+const GeneratePDF = async ( {inputs,titlu}:any ) => {
+    let html:string = `<html><h1 style="font:50;text-align:center;">${titlu}</h1><div>`;
     let lastcode:string = "0";
-    data.map((textobj:any) => {
+    console.log(inputs)
+    inputs.map((textobj:any) => {
         /*if(lastcode!=="3" || textobj.id[0]!=="3")
             html = html.concat('<hr>')*/
         if (textobj.id[0] === "1") {

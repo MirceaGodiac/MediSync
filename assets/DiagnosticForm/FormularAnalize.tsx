@@ -4,10 +4,12 @@ import NewText from './inputObjects/TextObj';
 import NewParagraf from './inputObjects/ParagrafObj';
 import NewBooleanInput from './inputObjects/BooleanObj';
 import GeneratePDF from './PDFgenerator';
+import { TextInput } from 'react-native-gesture-handler';
 
 const Formular = (email:string) => {
     const [inputs, setInputs] = useState<object[]>([]);
     const [counter,changeCounter] = useState(0)
+    const [titlu,changeTitlu] = useState('')
     
     ///text structure: {id:code,value:string}
     ///paragraf structure: {id:code,masterText,value:[]}
@@ -75,7 +77,7 @@ const Formular = (email:string) => {
     const deleteInputHandler = (id:number) => {
         setInputs(inputs.filter((input:any) => input.id !== id));
     };
-
+    console.log(inputs)
     return (
         <View style={styles.container}>
             <View>
@@ -85,6 +87,7 @@ const Formular = (email:string) => {
                 <Button title="Add Boolean" onPress={addBooleanHandler} />
                 </View>
                 <ScrollView>
+                <TextInput placeholder="Titlu document" value={titlu} onChangeText={text=>{changeTitlu(text)}} style={styles.titlu}/>
                 {inputs.map((input:any, index) => (
                     <View key={input.id} style={styles.inputContainer}>
                         <TouchableOpacity
@@ -101,7 +104,7 @@ const Formular = (email:string) => {
                 
             </ScrollView>
                 <Button title="trimite" onPress={()=>{
-                    GeneratePDF(inputs)}}/>
+                    GeneratePDF({inputs,titlu})}}/>
             </View>
             
             
@@ -115,23 +118,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     inputContainer: {
-
-        alignItems: 'flex-start',
-        marginBottom: 10,
-    },
-    input: {
         width:'100%',
+        marginBottom: 10,
+        flex:1,
+    },
+    titlu: {
+        width:'80%',
+        marginBottom:15,
+        textAlign:"center",
         height: 30,
+        marginRight:"10%",
+        marginLeft:"10%",
         borderColor: 'gray',
         borderWidth: 1,
-        paddingHorizontal: 10,
     },
     deleteButton: {
         backgroundColor: 'red',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,
-        alignItems: 'flex-end',
+        width:30,
+        alignSelf: 'flex-end',
     },
     deleteButtonText: {
         color: 'white',
@@ -139,7 +146,8 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
         flexDirection:'row',
-
+        justifyContent:'space-around',
+        paddingBottom:15,
     },
     button:{
         flex:1
