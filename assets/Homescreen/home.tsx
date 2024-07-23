@@ -13,6 +13,9 @@ const LoginScreen = () => {
       <TouchableOpacity onPress={() => nav.push("Consult")} style={[styles.button, styles.googleButton]}>
         <Text style={styles.buttonText}>Exemplu formular</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => nav.push("AssignPatient")} style={[styles.button, styles.googleButton]}>
+        <Text style={styles.buttonText}>Add Patient</Text>
+      </TouchableOpacity>
     </View>
   );
 };
