@@ -1,18 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { getDatabase, ref, child, get } from "firebase/database";
+import { collection, getFirestore, onSnapshot, query, where } from 'firebase/firestore';
 
-const LoginScreen = () => {
+type RootStackParamList = {
+  Auth: undefined;
+  Home: { userID: any };
+  Consult: { user: any };
+  ForgotPassword: undefined;
+  SelectDoctor: { userID: any };
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+function HomeScreen({ route, navigation }: Props) {
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
+  const [userID, setUserID] = useState(route.params.userID);
+
+  const [userState, setUserState] = useState("Loading...")
+
+  useState(() => {
+    getUserState();
+  })
+
+  async function getUserState() {
+    // returns wether the user is doctor or patient
+
+    const dbRef = ref(getDatabase());
+    await get(child(dbRef, `users/${userID}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        if (snapshot.val().isDoctor) {
+          setUserState("Doctor");
+        }
+        else setUserState("Pacient");
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
-      <TouchableOpacity onPress={() => nav.push("Consult")} style={[styles.button, styles.googleButton]}>
-        <Text style={styles.buttonText}>Exemplu formular</Text>
-      </TouchableOpacity>
+
+      {
+        userState == "Doctor" && <TouchableOpacity onPress={() => nav.push("Consult")} style={[styles.button, styles.googleButton]}>
+          <Text style={styles.buttonText}>Exemplu formular</Text>
+        </TouchableOpacity>
+      }
+
+
+
+      {
+        userState == "Pacient" && <TouchableOpacity onPress={() => nav.push("SelectDoctor")} style={[styles.button, styles.googleButton]}>
+          <Text style={styles.buttonText}>Make an appointment</Text>
+        </TouchableOpacity>
+      }
+
+      {
+        userState == "Doctor" && <TouchableOpacity onPress={() => nav.push("SelectDoctor")} style={[styles.button, styles.googleButton]}>
+          <Text style={styles.buttonText}>Make an appointment</Text>
+        </TouchableOpacity>
+      }
+
+      <Text>
+        {userState}
+      </Text>
     </View>
   );
 };
@@ -62,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default HomeScreen;

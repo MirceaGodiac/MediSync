@@ -24,7 +24,7 @@ const AuthGroup = () => {
       <View style={{ flex: 1, backgroundColor: "#f3e3ff" }}>
         <ScrollView>
           <View>
-            <LoginScreen />
+            <LoginScreen/>
             <View style={{ alignItems: 'center' }}>
               <TouchableOpacity onPress={() => {
                 setIsLoggedIn(false)
