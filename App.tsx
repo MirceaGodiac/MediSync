@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './assets/Auth Group/AuthPage'; // Adjust the path as needed
 import HomeScreen from './assets/Homescreen/home'; // Create a HomeScreen component
 import Formular from './assets/DiagnosticForm/FormularAnalize';
+import NotifSetter from './assets/DiagnosticForm/NotifSetter';
 
 
 
@@ -20,6 +21,7 @@ const App = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         
         <Stack.Screen name="FormularAnalize" component={Formular}/>
+        <Stack.Screen name="IntervalNotifSetter" component={NotifSetter}/>
         
       </Stack.Navigator>
     </NavigationContainer>

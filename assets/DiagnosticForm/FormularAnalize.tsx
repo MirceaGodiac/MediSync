@@ -4,12 +4,14 @@ import NewText from './inputObjects/TextObj';
 import NewParagraf from './inputObjects/ParagrafObj';
 import NewBooleanInput from './inputObjects/BooleanObj';
 import GeneratePDF from './PDFgenerator';
-import { TextInput } from 'react-native-gesture-handler';
+import HandleSaveDataAndOther from './HandleSaveDataAndOther';
+import { Switch, TextInput } from 'react-native-gesture-handler';
 
 const Formular = (email:string) => {
     const [inputs, setInputs] = useState<object[]>([]);
     const [counter,changeCounter] = useState(0)
     const [titlu,changeTitlu] = useState('')
+    const [PrescriptionOrForm,changePrescriptionOrForm] = useState<boolean>(false)
     
     ///text structure: {id:code,value:string}
     ///paragraf structure: {id:code,masterText,value:[]}
@@ -77,10 +79,21 @@ const Formular = (email:string) => {
     const deleteInputHandler = (id:number) => {
         setInputs(inputs.filter((input:any) => input.id !== id));
     };
-    console.log(inputs)
+
     return (
         <View style={styles.container}>
             <View>
+                <View style={styles.buttonContainer}>
+                    <Text>Prescriptie</Text>
+                    <Switch 
+                    value={PrescriptionOrForm} 
+                    onValueChange={()=>{changePrescriptionOrForm(!PrescriptionOrForm)}}
+                    trackColor={{false: '#767577', true: '#81b0ff'}}
+                    thumbColor={PrescriptionOrForm ? '#f5dd4b' : '#f4f3f4'}
+                    ios_backgroundColor="#3e3e3e"
+                    />
+                    <Text>Formular</Text>
+                </View>
                 <View style={styles.buttonContainer}>
                 <Button title="Add Input" onPress={addInputHandler} />
                 <Button title="Add Paragraph" onPress={addParagrafHandler} />
@@ -104,7 +117,7 @@ const Formular = (email:string) => {
                 
             </ScrollView>
                 <Button title="trimite" onPress={()=>{
-                    GeneratePDF({inputs,titlu})}}/>
+                    HandleSaveDataAndOther({inputs,titlu,PrescriptionOrForm,email})}}/>
             </View>
             
             

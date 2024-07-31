@@ -10,7 +10,6 @@ import GenerateBooleanString from './Html_string_to_pdf/GenerateBooleanString';
 const GeneratePDF = async ( {inputs,titlu}:any ) => {
     let html:string = `<html><h1 style="font:50;text-align:center;">${titlu}</h1><div>`;
     let lastcode:string = "0";
-    console.log(inputs)
     inputs.map((textobj:any) => {
         /*if(lastcode!=="3" || textobj.id[0]!=="3")
             html = html.concat('<hr>')*/
