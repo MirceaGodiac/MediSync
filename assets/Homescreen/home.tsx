@@ -4,13 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { collection, getFirestore, onSnapshot, query, where } from 'firebase/firestore';
+import { firebase } from '@react-native-firebase/database';
 
 type RootStackParamList = {
   Auth: undefined;
   Home: { userID: any };
   Consult: { user: any };
   ForgotPassword: undefined;
-  SelectDoctor: { userID: any };
+  SelectDoctor: undefined;
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -44,6 +45,19 @@ function HomeScreen({ route, navigation }: Props) {
     });
   }
 
+  interface Doctor {
+    uid: string;
+    name: string;
+  }
+  
+  function ExtractDoctorsAndPushToSelectDoctorFlow() {
+    
+
+
+
+    navigation.push("SelectDoctor");
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
@@ -57,7 +71,7 @@ function HomeScreen({ route, navigation }: Props) {
 
 
       {
-        userState == "Pacient" && <TouchableOpacity onPress={() => nav.push("SelectDoctor")} style={[styles.button, styles.googleButton]}>
+        userState == "Pacient" && <TouchableOpacity onPress={ExtractDoctorsAndPushToSelectDoctorFlow} style={[styles.button, styles.googleButton]}>
           <Text style={styles.buttonText}>Make an appointment</Text>
         </TouchableOpacity>
       }

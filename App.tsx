@@ -31,7 +31,7 @@ type RootStackParamList = {
   Home: { userID: any };
   Consult: { user: any };
   ForgotPassword: undefined;
-  SelectDoctor: { userID: any };
+  SelectDoctor: { userID: any, doctors: any };
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();

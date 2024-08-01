@@ -4,9 +4,11 @@ import {
     getFirestore, collection, onSnapshot,
     addDoc, deleteDoc, doc,
     query, where,
-    getDocs
+    getDocs,
+    snapshotEqual
 } from 'firebase/firestore';
-import { firebase } from '@react-native-firebase/database';
+import { firebase, FirebaseDatabaseTypes } from '@react-native-firebase/database';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -16,37 +18,52 @@ type RootStackParamList = {
     Home: { userID: any };
     Consult: { user: any };
     ForgotPassword: undefined;
-    SelectDoctor: { userID: any, };
+    SelectDoctor: undefined;
 };
 
-function SelectDoctorScreen() {
-    const [doctors, setDoctors] = useState([{ name: 'Ion de la balcon', userID: '' }]);
-    var ref = firebase.database().ref("users");
-    let _doctors = [{ name: '', userID: '' }];
+interface Doctor {
+    uid: string;
+    name: string;
+}
 
+type Props = NativeStackScreenProps<RootStackParamList, 'SelectDoctor'>;
 
-    ref.orderByChild("isDoctor").equalTo(true).on("child_added", function (snapshot) {
-        _doctors.push({ name: snapshot.val().name, userID: snapshot.key || '' });
-        console.log(_doctors)
+function SelectDoctorScreen({ route, navigation }: Props) {
+    const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const ref = firebase.database().ref("users");
+    let _doctors: Doctor[] = [];
+    let count = 0;
+    const limit = 100;
+
+    ref.orderByChild("isDoctor").equalTo(true).limitToFirst(limit).on("child_added", (snapshot) => {
+        if (snapshot.exists() && count < limit) {
+            const name = snapshot.val().name;
+            const uid = snapshot.key;
+            if (name && uid) {
+                _doctors.push({ name: name as string, uid: uid as string });
+                count++;
+
+            }
+
+        }
     });
-    setDoctors(_doctors)
 
+    const onDoctorUpdate = (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
+        if(snapshot.val()) {
+            const values: Doctor[] = Object.values(snapshot.val())
+            setDoctors(values)
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <View>
-                <ScrollView>
-                    {
-                        doctors.map((doctor, index) => (
-                            index != 0 && 
-                            <Text key={doctor.userID}>
-                                {doctor.name}
-                            </Text>
-                        ))
-                    }
-
-                </ScrollView>
-            </View>
+            <ScrollView>
+                {doctors.map((doctor) => (
+                    <Text key={doctor.uid} style={styles.doctorText}>
+                        {doctor.name}
+                    </Text>
+                ))}
+            </ScrollView>
         </View>
     );
 };
@@ -56,6 +73,12 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         justifyContent: 'space-around',
+    },
+    doctorText: {
+        fontSize: 18,
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
 });
 
