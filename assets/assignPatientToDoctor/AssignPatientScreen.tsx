@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import assignPatientToDoctor from './assignPage';
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from '@react-navigation/native';
+import auth from "@react-native-firebase/auth";
+import db from "@react-native-firebase/database";
 
 const App = () => {
   const nav = useNavigation<NativeStackNavigationProp<any>>();
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [message, setMessage] = useState('');
+  const [nrTelefon, setNrTelefon] = useState('');
+  let query: any;
 
   const handleAssign = async () => {
-    setMessage('');
-    // console.log('');
     try {
-      const doctorId = 'qdaavws3czRcXobFySVwv7rGQLe2';
-      await assignPatientToDoctor(phoneNumber, doctorId);
-      setMessage('Patient assigned successfully');
-      // console.log('Patient assigned successfully');
+
+      db().ref('users')
+      .orderByChild('nrTelefon')
+      .equalTo(nrTelefon)
+      .limitToFirst(1)
+      .once('value', data => {
+        const userId = Object.keys(data.val())[0];
+        db()
+        .ref(`/users/` + userId)
+        .update( { doctorId: auth().currentUser?.uid })
+        .then(() => Alert.alert('Date pacient actualizate cu succes!'))
+        .catch(error => {
+          Alert.alert('Failed to update data', error.message); // Display an error message to the user
+        });
+      });
+   
     } catch (error) {
-      setMessage('Error: ${error.message}');
-      // console.log('Error: ${error.message}');
+      Alert.alert("Oops! No user found with this phone number!");
     }
   };
 
@@ -29,18 +40,24 @@ const App = () => {
       <TextInput
         style={styles.input}
         placeholder="Patient Phone Number"
-        onChangeText={setPhoneNumber}
-        value={phoneNumber}
+        onChangeText={setNrTelefon}
+        value={nrTelefon}
         keyboardType="phone-pad"
       />
 
-      <Button title="Assign Patient..." onPress={() => handleAssign}/>
-      {message ? <Text>{message}</Text> : null}
-
+      <TouchableOpacity onPress={handleAssign} style={[styles.button, styles.googleButton]}>
+        <Text style={styles.buttonText}>Assign Patient...</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleAssign} style={[styles.button, styles.googleButton]}>
+        <Text style={styles.buttonText}>Show Your Patient List</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => nav.push("Home")} style={[styles.button, styles.googleButton]}>
         <Text style={styles.buttonText}>Return Home</Text>
       </TouchableOpacity>
-
+      <TouchableOpacity onPress={() => nav.push("Auth")} style={[styles.button, styles.googleButton]}>
+        <Text style={styles.buttonText}>Return To Login</Text>
+      </TouchableOpacity>
+ 
     </View>
   );
 };

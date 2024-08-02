@@ -18,6 +18,7 @@ function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isDoctor, setIsDoctor] = useState(false);
+  const [doctorId, setDoctorId] = useState("GjxmcA1GUgZ158wnaLwSOSixVsm1");
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -25,7 +26,9 @@ function RegisterScreen() {
     // to do later, will add stuff to firestore realtime database
     // now i just made a user autentithication system
     // to see how to do this visit https://www.youtube.com/watch?v=mZlKwRV4MC8
-    db().ref(`/users/${response.user.uid}`).set({ CNP, nrTelefon, name, surName, email, isDoctor });
+    
+    db().ref(`/users/${response.user.uid}`).set({ CNP, nrTelefon, name,
+       surName, email, isDoctor,doctorId });
   }
 
   const registerAndGoToMainFlow = async (response: any) => {
