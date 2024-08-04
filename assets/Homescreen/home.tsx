@@ -7,11 +7,16 @@ import { collection, getFirestore, onSnapshot, query, where } from 'firebase/fir
 import { firebase } from '@react-native-firebase/database';
 
 type RootStackParamList = {
-  Auth: undefined;
+  StartPage: undefined;
+  PacientRegister: undefined;
+  DoctorRegister: undefined;
+  OrganisationRegister: undefined;
   Home: { userID: any };
   Consult: { user: any };
   ForgotPassword: undefined;
   SelectDoctor: undefined;
+  ScheduleAppointment: { doctorID: any };
+  CalendarScreen: {userID: any};
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
@@ -77,8 +82,8 @@ function HomeScreen({ route, navigation }: Props) {
       }
 
       {
-        userState == "Doctor" && <TouchableOpacity onPress={() => nav.push("SelectDoctor")} style={[styles.button, styles.googleButton]}>
-          <Text style={styles.buttonText}>Make an appointment</Text>
+        userState == "Doctor" && <TouchableOpacity onPress={() => nav.push("CalendarScreen", {userID: userID})} style={[styles.button, styles.googleButton]}>
+          <Text style={styles.buttonText}>Calendar Programari</Text>
         </TouchableOpacity>
       }
 

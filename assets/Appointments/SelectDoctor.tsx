@@ -9,17 +9,21 @@ import {
 } from 'firebase/firestore';
 import { firebase, FirebaseDatabaseTypes } from '@react-native-firebase/database';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import db from "@react-native-firebase/database";
 
 // TODO: Replace the following with your app's Firebase project configuration
 
 type RootStackParamList = {
-    Auth: undefined;
+    StartPage: undefined;
+    PacientRegister: undefined;
+    DoctorRegister: undefined;
+    OrganisationRegister: undefined;
     Home: { userID: any };
     Consult: { user: any };
     ForgotPassword: undefined;
     SelectDoctor: undefined;
-};
+    ScheduleAppointment: { doctorID: any };
+  };
 
 interface Doctor {
     uid: string;
@@ -30,38 +34,47 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SelectDoctor'>;
 
 function SelectDoctorScreen({ route, navigation }: Props) {
     const [doctors, setDoctors] = useState<Doctor[]>([]);
-    const ref = firebase.database().ref("users");
-    let _doctors: Doctor[] = [];
-    let count = 0;
-    const limit = 100;
+    const [limit, setLimit] = useState(100);
 
-    ref.orderByChild("isDoctor").equalTo(true).limitToFirst(limit).on("child_added", (snapshot) => {
-        if (snapshot.exists() && count < limit) {
-            const name = snapshot.val().name;
-            const uid = snapshot.key;
-            if (name && uid) {
-                _doctors.push({ name: name as string, uid: uid as string });
-                count++;
 
-            }
+    useEffect(() => {
+        db()
+            .ref('users')
+            .orderByChild('isDoctor')
+            .equalTo(true)
+            .limitToFirst(limit)
+            .on('value', onDoctorUpdate);
 
-        }
-    });
+    }, [limit])
 
     const onDoctorUpdate = (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
-        if(snapshot.val()) {
-            const values: Doctor[] = Object.values(snapshot.val())
+        if (snapshot.val()) {
+            const values: Doctor[] = Object.values(snapshot.val()).map((doctor: any) => ({
+                ...doctor,
+                uid: doctor.uid,
+            }));
             setDoctors(values)
+            console.log(values);
         }
     }
+
+
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 {doctors.map((doctor) => (
-                    <Text key={doctor.uid} style={styles.doctorText}>
-                        {doctor.name}
-                    </Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10}}>
+                        <Text key={doctor.uid} style={styles.doctorText}>
+                            {doctor.name}
+                        </Text>
+                        <Button title='Fa o programare' onPress={() => {
+                            navigation.push("ScheduleAppointment", {doctorID: doctor.uid})
+                        }}>
+
+                        </Button>
+                    </View>
+
                 ))}
             </ScrollView>
         </View>
@@ -83,3 +96,7 @@ const styles = StyleSheet.create({
 });
 
 export default SelectDoctorScreen;
+function auth() {
+    throw new Error('Function not implemented.');
+}
+

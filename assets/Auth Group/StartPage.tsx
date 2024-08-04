@@ -6,30 +6,8 @@ import auth from "@react-native-firebase/auth";
 
 // Login screen component, just the input fields and 3 buttons (as sof the ui)
 // Rendered conditionally in AuthPage
-const LoginScreen = () => {
+const StartPage = () => {
   const nav = useNavigation<NativeStackNavigationProp<any>>();
-
-  // some useState variables for the input fields
-  const [email, setEmail] = useState("ngodiac@gmail.com");
-  const [password, setPassword] = useState("Fastman123!");
-
-  const goToMainFlow = async () => {
-    if (email && password) {
-      try {
-        const response = await auth().signInWithEmailAndPassword(
-          email,
-          password
-        );
-        if (response.user) {
-          // At this point the user is logged in
-          nav.replace("Home", { userID: response.user.uid} )
-        }
-      } catch (e: any) {
-        // just log the error now, if there is one but were gonna have to make a better error logger in the future
-        Alert.alert("Oops! An error occured", e.toString())
-      }
-    }
-  }
 
   return (
     <View style={styles.container}>
@@ -37,42 +15,22 @@ const LoginScreen = () => {
         style={styles.imageStyle}
         source={require('../Obiecte.png')}
       />
-      <Text style={styles.subtitle}> {"    < "}Inapoi la pagina principala</Text>
       <Text style={styles.title}>Bine ati revenit!</Text>
       <View style={{ flex: 2, justifyContent: "center" }}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={password}
-          onChangeText={setPassword}
-        />
+        
         <View>
-          <TouchableOpacity style={styles.button} onPress={goToMainFlow}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity style={styles.button} onPress={() => {nav.push("PacientRegister")}}>
+            <Text style={styles.buttonText}>Sunt Pacient</Text>
           </TouchableOpacity>
 
-          <Text style={[styles.subtitle, { textAlign: 'center' }]}>sau</Text>
-
-          <TouchableOpacity style={styles.googlebutton} onPress={() => { Alert.alert("Opa", "Nam facuto inca") }}>
-            <View style={styles.content}>
-              <Image
-                source={{ uri: 'https://img.icons8.com/color/48/000000/google-logo.png' }}
-                style={styles.icon}
-              />
-              <Text style={styles.googletext}>Sign in with Google</Text>
-            </View>
+          <TouchableOpacity style={styles.button} onPress={() => {nav.push("DoctorRegister")}}>
+            <Text style={styles.buttonText}>Sunt Doctor</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <Text style={styles.buttonText}>Sunt Organizatie</Text>
+          </TouchableOpacity>
+
         </View>
 
       </View>
@@ -87,6 +45,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    backgroundColor: '#f3e3ff'
   },
   title: {
     fontSize: 30,
@@ -163,4 +122,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default StartPage;
