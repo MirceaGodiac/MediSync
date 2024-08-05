@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextInput } from "react-native-gesture-handler";
 import { View, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { inputsEdges,inputsBackground } from '../../color';
 import NewText from './TextObj';
 
 const NewParagraf = ({prop}:any) =>{
@@ -30,21 +31,20 @@ const NewParagraf = ({prop}:any) =>{
     };
 
     return (
-        <View >
+        <View style={styles.container}>
             <TextInput value = {masterText} onChangeText = {text=>{handleParagrafMasterTextChange(text,prop.id)}} style={styles.masterinput}/>
-            <View style={styles.container}>
+            <View style={{flex:1,justifyContent:'center'}}>
                 <Button title="Add Input" onPress={ParafaddInputHandler} />
                 <ScrollView>
                 {inputs.map((input:any, index:number) => (
                     <View key={input.id} style={styles.inputContainer}>
+                        <NewText prop={{text:input.value,index:index,id:input.id,handleInputChange:ParafhandleInputChange}}/>
                         <TouchableOpacity
                             style={styles.deleteButton}
                             onPress={() => deleteInputHandler(input.id)}
                         >
                             <Text style={styles.deleteButtonText}>X</Text>
                         </TouchableOpacity>
-                        <NewText prop={{text:input.value,index:index,id:input.id,handleInputChange:ParafhandleInputChange}}/>
-                        
                     </View>
                 ))}
             </ScrollView>
@@ -57,15 +57,19 @@ const NewParagraf = ({prop}:any) =>{
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'space-around',
-        borderWidth:2,
-        padding:5,
-        paddingLeft:20,
-        borderColor:'grey',
-        width:'100%'
+        flex:1,
+        justifyContent:'center',
+        backgroundColor:'white',
+        width:'90%',
+        borderRadius:17,
     },
     inputContainer: {
-        alignItems: 'flex-start',
+        width:'100%',
+        marginBottom: 10,
+        paddingLeft:15,
+        paddingRight:15,
+        flex:1,
+        flexDirection:'row',
     },
     input: {
         width:'100%',
@@ -75,16 +79,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     deleteButton: {
-        backgroundColor: 'red',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,
-        width:30,
-        alignSelf: 'flex-end',
+        width:35,
+        alignSelf: 'flex-start',
     },
     deleteButtonText: {
-        color: 'white',
+        color: 'grey',
         fontWeight: 'bold',
+        justifyContent:'center',
+        fontSize:17
     },
     addbutton:{
         width:'20%',
@@ -95,9 +100,11 @@ const styles = StyleSheet.create({
     masterinput: {
         width:'100%',
         height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
+        borderColor: inputsEdges,
+        backgroundColor:inputsBackground,
+        borderWidth: 2,
         marginBottom:10,
+        borderRadius:50,
     },
 });
 

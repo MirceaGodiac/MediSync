@@ -3,20 +3,18 @@ import { View, Button, StyleSheet, ScrollView, TouchableOpacity, Text } from 're
 import NewText from './inputObjects/TextObj';
 import NewParagraf from './inputObjects/ParagrafObj';
 import NewBooleanInput from './inputObjects/BooleanObj';
-import GeneratePDF from './PDFgenerator';
-import HandleSaveDataAndOther from './HandleSaveDataAndOther';
-import { Switch, TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
+import { formularBackground, inputsBackground, inputsEdges } from '../color';
 
-const Formular = (email:string) => {
-    const [inputs, setInputs] = useState<object[]>([]);
+
+const Formular = ({prop}:any) => {
     const [counter,changeCounter] = useState(0)
-    const [titlu,changeTitlu] = useState('')
-    const [PrescriptionOrForm,changePrescriptionOrForm] = useState<boolean>(false)
+    const {inputs,setInputs,titlu,changeTitlu} = prop
+
     
     ///text structure: {id:code,value:string}
-    ///paragraf structure: {id:code,masterText,value:[]}
+    ///paragraf structure: {id:code,masterText:string,value:[]}
     ///boolean structure: {id:code,valuebool:boolean,valuetext:string}
-
     const addInputHandler = () => {
         changeCounter(counter+1)
         const code = "1"+counter
@@ -72,7 +70,6 @@ const Formular = (email:string) => {
                 return {...input,value:texts}
             return input
         })
-        console.log(NewObjs)
         setInputs(NewObjs)
     }
 
@@ -82,44 +79,28 @@ const Formular = (email:string) => {
 
     return (
         <View style={styles.container}>
-            <View>
-                <View style={styles.buttonContainer}>
-                    <Text>Prescriptie</Text>
-                    <Switch 
-                    value={PrescriptionOrForm} 
-                    onValueChange={()=>{changePrescriptionOrForm(!PrescriptionOrForm)}}
-                    trackColor={{false: '#767577', true: '#81b0ff'}}
-                    thumbColor={PrescriptionOrForm ? '#f5dd4b' : '#f4f3f4'}
-                    ios_backgroundColor="#3e3e3e"
-                    />
-                    <Text>Formular</Text>
-                </View>
                 <View style={styles.buttonContainer}>
                 <Button title="Add Input" onPress={addInputHandler} />
                 <Button title="Add Paragraph" onPress={addParagrafHandler} />
                 <Button title="Add Boolean" onPress={addBooleanHandler} />
                 </View>
-                <ScrollView>
                 <TextInput placeholder="Titlu document" value={titlu} onChangeText={text=>{changeTitlu(text)}} style={styles.titlu}/>
-                {inputs.map((input:any, index) => (
+                <ScrollView style={{width:'100%',height:'100%'}}>
+                {inputs.map((input:any, index:number) => (
                     <View key={input.id} style={styles.inputContainer}>
+                        {input.id[0]==1?<NewText prop={{text:input.value,index:index,id:input.id,handleInputChange:handleInputChange}}/>:''}
+                        {input.id[0]==2?<NewParagraf prop={{inputs:input.value,id:input.id,handleParagrafAnyUpdate:handleParagrafAnyUpdate,masterText:input.masterText,handleParagrafMasterTextChange:handleParagrafMasterTextChange}}/>:''}
+                        {input.id[0]==3?<NewBooleanInput prop={{valuebool:input.valuebool,valuetext:input.valuetext,id:input.id,handleBooleanChange:handleBooleanChange,handleBooleanTextChange:handleBooleanTextChange}}/>:''}
                         <TouchableOpacity
                             style={styles.deleteButton}
                             onPress={() => deleteInputHandler(input.id)}
                         >
                             <Text style={styles.deleteButtonText}>X</Text>
                         </TouchableOpacity>
-                        {input.id[0]==1?<NewText prop={{text:input.value,index:index,id:input.id,handleInputChange:handleInputChange}}/>:''}
-                        {input.id[0]==2?<NewParagraf prop={{inputs:input.value,id:input.id,handleParagrafAnyUpdate:handleParagrafAnyUpdate,masterText:input.masterText,handleParagrafMasterTextChange:handleParagrafMasterTextChange}}/>:''}
-                        {input.id[0]==3?<NewBooleanInput prop={{valuebool:input.valuebool,valuetext:input.valuetext,id:input.id,handleBooleanChange:handleBooleanChange,handleBooleanTextChange:handleBooleanTextChange}}/>:''}
                     </View>
                 ))}
                 
-            </ScrollView>
-                <Button title="trimite" onPress={()=>{
-                    HandleSaveDataAndOther({inputs,titlu,PrescriptionOrForm,email})}}/>
-            </View>
-            
+                </ScrollView>
             
         </View>
     );
@@ -128,43 +109,44 @@ const Formular = (email:string) => {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        justifyContent: 'space-around',
+        height:'100%',
+        backgroundColor:formularBackground,
     },
     inputContainer: {
         width:'100%',
         marginBottom: 10,
         flex:1,
+        flexDirection:'row',
     },
     titlu: {
-        width:'80%',
         marginBottom:15,
         textAlign:"center",
         height: 30,
         marginRight:"10%",
         marginLeft:"10%",
-        borderColor: 'gray',
-        borderWidth: 1,
+        borderColor: inputsEdges,
+        backgroundColor:inputsBackground,
+        borderWidth: 2,
+        borderRadius:50,
     },
     deleteButton: {
-        backgroundColor: 'red',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,
-        width:30,
-        alignSelf: 'flex-end',
+        width:35,
+        alignSelf: 'flex-start',
     },
     deleteButtonText: {
-        color: 'white',
+        color: 'grey',
         fontWeight: 'bold',
+        justifyContent:'center',
+        fontSize:17
     },
     buttonContainer:{
         flexDirection:'row',
         justifyContent:'space-around',
         paddingBottom:15,
     },
-    button:{
-        flex:1
-    }
 });
 
 export default Formular;

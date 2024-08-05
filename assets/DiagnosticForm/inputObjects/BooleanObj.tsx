@@ -1,5 +1,6 @@
 import { TextInput } from "react-native-gesture-handler"
 import { View, Text, StyleSheet } from "react-native"
+import { inputsEdges,inputsBackground } from '../../color';
 import React from "react"
 
 const NewBooleanInput = ({ prop }:any) => {
@@ -13,21 +14,26 @@ const NewBooleanInput = ({ prop }:any) => {
 
 const styles = StyleSheet.create({
     container:{
+        flex:1,
         flexDirection:'row',
-        justifyContent:'space-around',
     },
     text:{
-        borderColor:'gray',
-        borderWidth:1,
-        flex:1,
-        paddingRight:'60%',
+        borderColor: inputsEdges,
+        backgroundColor:inputsBackground,
+        borderWidth: 2,
+        width:'70%',
         marginRight:'15%',
+        height:30,
+        borderRadius:50,
     },
     bool:{
-        borderColor:'gray',
-        borderWidth:1,
+        borderColor:inputsEdges,
+        borderWidth:2,
         borderRadius:7,
-        flex:1,
+        justifyContent:'center',
+        fontSize:20,
+        height:30,
+        width:'15%',
         textAlign:'center',
     },
     boolgreen:{
